@@ -167,7 +167,7 @@ client = OpenAI(api_key=authKey, base_url=api_url)
 response = client.chat.completions.create(
     model="NotNeeded", 
     messages=[
-        {"role": "user", "content": "Tell me about your trip to Paris?"}
+        {"role": "user", "content": "Tell me about your trip to Paris."}
     ],
     stream=True  # Enable streaming
 )
