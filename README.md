@@ -1,11 +1,12 @@
-**LLM-API**
+# LLM-API
 
-**Brief Description**
+## Brief Description
 
 * The LLM-API uses a wrapper around llama.cpp and creates an API for running and communicating with your LLMs locally and online.
-* It supports standard openai endpoints and you can utilize the openai python library. 
+* It supports standard openai endpoints and you can utilize the openai python library.
+* A separate front-end APP that can be hosted on firebase will be shared.
 
-**Prerequisites**
+## Prerequisites
 
 * Node.js and npm (or yarn)
 * A Hugging Face account
@@ -16,7 +17,7 @@
 * Python (for testing)
 
 
-**Installation**
+## Installation
 
 1. **Clone the repository:**
 ```bash
@@ -113,14 +114,16 @@ module.exports = config;
 ```bash
     node src/services/generateAuthKey.js "PythonKey" "This key is for testing purposes"
 ```
-- This key provides authentication forremote access.
+*This key provides authentication for remote access.*
 
 10. **Run API**
 ```bash
 node src/app.js
 ```
 
-11. **Create demo python code:**
+## Basic Usage
+
+**Python demo code:**
 The API supports the openai library.
 
 *First load the modell by accessing the /loadModel end point*
