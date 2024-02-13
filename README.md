@@ -33,6 +33,7 @@
 ```
 
 3. **Obtain an SSL certificate:**
+- Before completing this step I recommend setting up a DDNS for mapping your IP to a domain name. For instance through Synology or other providers.
 - Install winACME (or other OS version).
 - Set up winACME to retrieve an SSL certificate for your domain (consult winACME documentation for specifics).
 - https://www.win-acme.com/manual/getting-started
