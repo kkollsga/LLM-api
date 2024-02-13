@@ -183,4 +183,72 @@ for chunk in response:
     print(chunk.choices[0].delta.content, end="")
 ```
 
+## Endpoints
+
+### Root Routes (`/`)
+
+* **GET /models** 
+  *  **Purpose:** Lists currently loaded AI models.
+  *  **Response:**
+     *  **Success (200):** JSON array of model names (e.g., `["model1", "model2"]`)
+     *  **Error (500):** JSON object with an error message (e.g., `{"error": "Failed to load models: ..."}`)
+
+* **POST /loadModel**
+  *  **Purpose:** Loads an AI model.
+  *  **Parameters:**
+      *  `model`: Name/identifier of the model to load
+      *  `personality`: (Optional) Personality configuration for the model
+  *  **Response:**
+     *  **Success (200):** JSON object with a success message or other relevant output (e.g., `{"message": "Model loaded successfully"}`)
+     *  **Error (400):** JSON object with an error message if the model parameter is missing.
+     *  **Error (500):** JSON object with an error message if the loading fails.
+
+* **GET /unloadModel**
+  *  **Purpose:** Unloads the currently active AI model.
+  *  **Response:**
+     *  **Success (200):** JSON object with a success message (e.g., `{"message": "Model unloaded."}`)
+     *  **Error (500):** JSON object with an error message if the unloading fails.
+
+* **GET /status**  
+  *  **Purpose:** Provides real-time status updates about the AI model(s). Uses Server-Sent Events (SSE) to stream updates.
+  *  **Response:**
+     *  **Event Stream Format:**  Each event has the following data format:
+        ```
+        event: message
+        data: {"status": "...", "info": "...", "models": ["...", "..."]}
+        ```
+        *   `status`: General status of the model (e.g., "loading", "ready", "error")
+        *   `info`: Additional status information 
+        *   `models`: An array of currently loaded model names.
+
+* **GET /ping**
+  *  **Purpose:** Simple health check endpoint.
+  *  **Response:**
+      * **Success (200):** Text response "pong"
+
+### Chat Routes (`/chat`)
+
+* **POST /completions**
+  *  **Purpose:** Generates chat responses from the AI model. Can be used for both regular responses and streaming responses.
+  *  **Parameters:**
+     *  `messages`:  An array of message objects, each with at least a  `role` property (e.g., "user" or "system").
+     *  `stream`: (Optional) Boolean flag indicating whether to return a stream of responses.
+  *  **Response:**
+     *  **Non-streaming (stream=false):** JSON object with an array of responses from the model.
+     *  **Streaming:** Server-Sent Events (SSE) with each event containing a `data` field in JSON format representing a message part. Messages end with `data: [DONE]`  signal.
+
+* **GET /errors**
+  *  **Purpose:** Gets any recorded errors from the AI model's logger.
+  *  **Response:**
+     *  **Success (200):** JSON object containing an array of error messages.
+     *  **Error (500):** JSON object with an error message if there's a problem retrieving errors.
+
+* **GET /ask**
+  *  **Purpose:** Sends a question to the AI model, allows regular and streaming responses.
+  *  **Parameters:**
+     *  `question`: The question string.
+     *  `stream`: (Optional) Boolean flag to use streaming. 
+  *  **Response:**
+     *  **Non-streaming:** JSON with fields `question` and `response`.
+     *  **Streaming:** Server-Sent Events with `data` fields containing JSON-formatted message fragments.
 
