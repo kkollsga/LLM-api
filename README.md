@@ -12,6 +12,7 @@
 * winACME tool (or equivalent) (for SSL)
 * CUDA
 * llama.cpp
+* cmake
 * Python (for testing)
 
 
@@ -22,7 +23,7 @@
    git clone [https://github.com/your-username/llm-api.git](https://github.com/your-username/llm-api.git)
 ```
 
-2. Install dependencies:
+2. **Install dependencies:**
 ```bash
     cd llm-api
     npm install 
@@ -30,7 +31,7 @@
     yarn install
 ```
 
-3. Obtain an SSL certificate:
+3. **Obtain an SSL certificate:**
 - Install winACME (or other OS version).
 - Set up winACME to retrieve an SSL certificate for your domain (consult winACME documentation for specifics).
 - https://www.win-acme.com/manual/getting-started
@@ -39,10 +40,11 @@
     ../ssl/<webaddress>-crt.pem (certificate)
     ../ssl/<webaddress>-chain.pem (CA chain)
 
-4. Install CUDA (or equivalent for GPU acceleration, recommended but not required)
+4. **Install CUDA**
+*(or equivalent for GPU acceleration, recommended but not required)*
 - Follow instructions https://developer.nvidia.com/cuda-downloads
 
-5. Get llama.cpp.
+5. **Get llama.cpp.**
 ```bash
     git clone https://github.com/ggerganov/llama.cpp
     cd llama.cpp
@@ -57,13 +59,13 @@
     cmake --build . --config Release
 ```
 
-6. Download a GGUF model:
+6. **Download a GGUF model:**
 - Create a Hugging Face account if you don't have one.
 - Choose a suitable GGUF model from the Hugging Face model hub.
 - Download the model files and place them in a location like:
     D:\\LLMs\\TheBloke\\Mixtral-8x7B-Instruct-v0.1-GGUF\\mixtral-8x7b-instruct-v0.1.Q3_K_M.gguf
 
-7. Update Configuration:
+7. **Update Configuration:**
 Create config.js in root and modify the values as needed:
 ```javascript
 const config = {
@@ -83,7 +85,7 @@ const config = {
 module.exports = config;
 ```
 
-8. Create '../data/models.json'.
+8. **Create '../data/models.json'.**
 - Example setup.
 ```json
 {
@@ -107,20 +109,21 @@ module.exports = config;
 }
 ```
 
-9. Generate an auth key.
+9. **Generate an auth key.**
 ```bash
     node src/services/generateAuthKey.js "PythonKey" "This key is for testing purposes"
 ```
 - This key provides authentication forremote access.
 
-10. Run API
+10. **Run API**
 ```bash
 node src/app.js
 ```
 
-11. Create demo python code:
+11. **Create demo python code:**
 The API supports the openai library.
-First load the modell by accessing the /loadModel end point
+
+*First load the modell by accessing the /loadModel end point*
 ```python
 import requests
 import json
@@ -143,7 +146,7 @@ headers = {
 send_post_request(f"{api_url}/loadModel", data=data, headers=headers)
 ```
 
-No streaming mode:
+*No streaming mode:*
 ```python
 from openai import OpenAI
 from IPython.display import Markdown
@@ -158,7 +161,7 @@ response = client.chat.completions.create(
 Markdown(response.responses)
 ```
 
-Streaming mode:
+*Streaming mode:*
 ```python
 client = OpenAI(api_key=authKey, base_url=api_url)
 response = client.chat.completions.create(
