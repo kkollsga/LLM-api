@@ -59,10 +59,9 @@ async function loadModelAndRoutes() {
         app.use('/chat', chatRoutes);
         app.use('/', rootRoutes);
 
-        setupServer(); // Move server setup here, ensuring it starts after models are loaded
+        setupServer();
     } catch (error) {
         console.error('Failed to start API:', error);
-        // Handle error, potentially shutting down the server or retrying model loading
     }
 }
 
