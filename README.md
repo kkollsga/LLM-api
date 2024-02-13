@@ -36,10 +36,12 @@
 - Install winACME (or other OS version).
 - Set up winACME to retrieve an SSL certificate for your domain (consult winACME documentation for specifics).
 - https://www.win-acme.com/manual/getting-started
-- Once obtained, place the following files in the specified locations in your project:
-    - ../ssl/<webaddress>-key.pem (private key)
-    - ../ssl/<webaddress>-crt.pem (certificate)
-    - ../ssl/<webaddress>-chain.pem (CA chain)
+- Once obtained, place the following files in ./ssl:
+```bash
+../ssl/<webaddress>-key.pem # private key
+../ssl/<webaddress>-crt.pem # certificate
+../ssl/<webaddress>-chain.pem # CA chain
+```
 
 4. **Install CUDA**
 *(or equivalent for GPU acceleration, recommended but not required)*
