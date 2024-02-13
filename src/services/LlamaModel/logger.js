@@ -1,7 +1,9 @@
+const config = require('../../../config');
+
 function extractBetween(text) {
     const patterns = [
         { start: "Device", end: ", compute", keepStart: true, keepEnd: false },
-        { start: "D:\\LLMs\\", end: " (version", keepStart: false, keepEnd: false, prefix:"Model: "},
+        { start: `${config['llmStorage']}\\`, end: " (version", keepStart: false, keepEnd: false, prefix:"Model: "},
         { start: "llm_load_tensors:", end: "", keepStart: false, keepEnd: false, prefix:"Tensors: " }
     ];
     const escapeRegExp = (string) => string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

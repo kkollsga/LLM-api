@@ -76,6 +76,7 @@ const config = {
     port: 80, // Default port number. Once SSL has been set up change to 443  (443 for SSL, 80 for normal)
     useSSL: false, //Flag to enable/disable SSL change to true after SSL is set up with ACME
     llamaMain: 'D:\\llama-cpp\\bin\\Release\\main.exe', // Path to main.exe usually llama-cpp\bin\Release\main.exe
+    llmStorage: 'D:\\LLMs', // Path to local model storage. Models (for now) still needs to be manually added to models.json
 
 
     // SSL Configuration
@@ -94,7 +95,7 @@ module.exports = config;
 {
     "Mistral-7b": {
         "params": {
-            "model":"D:\\LLMs\\TheBloke\\Mistral-7B-Instruct-v0.2-GGUF\\mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+            "model":"TheBloke\\Mistral-7B-Instruct-v0.2-GGUF\\mistral-7b-instruct-v0.2.Q4_K_M.gguf",
             "instruct": true,
             "temperature": 0.7,
             "gpuLayers": 80,

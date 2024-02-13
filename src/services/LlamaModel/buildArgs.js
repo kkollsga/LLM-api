@@ -3,11 +3,12 @@
  * @param {Object} params - The model parameters.
  * @returns {Array} The command-line arguments array.
  */
+const config = require('../../../config');
 function buildArgs(params) {
     const args = [];
     // Model file path
     if (params.model) {
-        args.push('--model', params.model); // Specify the path to the LLaMA model file.
+        args.push('--model', `${config['llmStorage']}\\${params.model}`); // Specify the path to the LLaMA model file.
     }
     // Interactive mode
     if (params.interactive) {
