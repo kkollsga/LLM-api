@@ -1,30 +1,31 @@
-# LLM-API
+# LLM-API Documentation
 
-## Brief Description
+# Overview
 
-* The LLM-API uses a wrapper around llama.cpp and creates an API for running and communicating with your LLMs locally and online.
-* It supports standard openai endpoints and you can utilize the openai python library.
-* A separate front-end APP that can be hosted on firebase will be shared.
+The LLM-API is designed as a comprehensive solution for integrating Large Language Models (LLMs) into your projects. By wrapping around llama.cpp, it provides a versatile API that facilitates both local and online interactions with LLMs, and it is set up to support secure communication through SSL. It's compatible with standard OpenAI endpoints, allowing for seamless integration with the OpenAI Python library. Additionally, a separate front-end application suitable for hosting on platforms like Firebase will be provided, enhancing the API's utility with an accessible user interface.
 
 ## Prerequisites
+Before you begin setting up the LLM-API, ensure you have the following prerequisites installed and set up:
 
-* Node.js and npm (or yarn)
-* A Hugging Face account
-* winACME tool (or equivalent) (for SSL)
-* CUDA
-* llama.cpp
-* cmake
-* Python (for testing)
+- *Node.js and npm (or Yarn)*: Required for managing the project's JavaScript dependencies.
+- *llama.cpp*: The core dependency that interfaces with LLMs.
+- *CMake*: A cross-platform tool required for building the llama.cpp library.
+- *HuggingFace account*: Necessary for accessing and downloading LLM models.
+- *winACME tool (or equivalent)*: Used for obtaining SSL certificates for secure communication (recommended).
+- *CUDA*: For GPU acceleration, enhancing the performance of LLMs.
+- *Python*: Required for running test scripts and can be used for interacting with the API.
 
 
-## Installation
+## Installation guide
 
-1. **Clone the repository:**
+1. **Repository Setup**
+Clone the LLM-API repository to your local machine using the following command:
 ```bash
-   git clone [https://github.com/your-username/llm-api.git](https://github.com/your-username/llm-api.git)
+   git clone https://github.com/kkollsga/LLM-api.git
 ```
 
-2. **Install dependencies:**
+2. **Dependency Installation**
+Navigate to the cloned repository and install all necessary dependencies using npm or Yarn:
 ```bash
     cd llm-api
     npm install 
@@ -32,103 +33,56 @@
     yarn install
 ```
 
-3. **Obtain an SSL certificate:**
-- Before completing this step I recommend setting up a DDNS for mapping your IP to a domain name. For instance through Synology or other providers.
-- Install winACME (or other OS version).
-- Set up winACME to retrieve an SSL certificate for your domain (consult winACME documentation for specifics).
-- https://www.win-acme.com/manual/getting-started
-- Once obtained, place the following files in ./ssl:
-```bash
-../ssl/<webaddress>-key.pem # private key
-../ssl/<webaddress>-crt.pem # certificate
-../ssl/<webaddress>-chain.pem # CA chain
-```
+3. **SSL Certificate Configuration**
+To securely host the API, an SSL certificate is required:
+- It is recommended to start by setting up a Dynamic DNS (DDNS) to associate your IP with a domain name (not required).
+- Install and configure winACME (or an equivalent tool for your operating system) following its [official documentation](https://www.win-acme.com/manual/getting-started).
+- Place the acquired SSL certificate files in the ./ssl directory.
 
-4. **Install CUDA**
-*(or equivalent for GPU acceleration, recommended but not required)*
-- Follow instructions https://developer.nvidia.com/cuda-downloads
+4. **CUDA installation**
+For improved LLM performance through GPU acceleration, install CUDA following the instructions on the official NVIDIA [CUDA Downloads page](https://developer.nvidia.com/cuda-downloads).
 
-5. **Get llama.cpp.**
+5. **Setting Up `llama.cpp`**
+Clone and build the llama.cpp using library following the [instructions](https://github.com/ggerganov/llama.cpp/blob/master/README.md).
+Build using [CMake](https://cmake.org/download/):
 ```bash
     git clone https://github.com/ggerganov/llama.cpp
     cd llama.cpp
-```
-- Build llama.cpp (in windows I recommend using CMake, example is for CUDA)
-    - See https://github.com/ggerganov/llama.cpp/blob/master/README.md for more examples
-
-```bash
     mkdir build
     cd build
     cmake .. -DLLAMA_CUBLAS=ON
     cmake --build . --config Release
 ```
+*This example set up builds llama.cpp with CUDA.*
 
-6. **Download a GGUF model:**
-- Create a Hugging Face account if you don't have one.
-- Choose a suitable GGUF model from the Hugging Face model hub.
-- Download the model files and place them in a location like:
-    D:\\LLMs\\TheBloke\\Mixtral-8x7B-Instruct-v0.1-GGUF\\mixtral-8x7b-instruct-v0.1.Q3_K_M.gguf
+6. **Downloading a GGUF Model**
+- If you haven't already, create an account on Hugging Face.
+- Select and download a GGUF model from the Hugging Face model hub.
+- Save the model to a known location, e.g., D:\LLMs\YourModelDirectory.
 
 7. **Update Configuration:**
-Create config.js in root and modify the values as needed:
-```javascript
-const config = {
-    host: '0.0.0.0', // Host to listen on all network interfaces
-    port: 80, // Default port number. Once SSL has been set up change to 443  (443 for SSL, 80 for normal)
-    useSSL: false, //Flag to enable/disable SSL change to true after SSL is set up with ACME
-    llamaMain: 'D:\\llama-cpp\\bin\\Release\\main.exe', // Path to main.exe usually llama-cpp\bin\Release\main.exe
-    llmStorage: 'D:\\LLMs', // Path to local model storage. Models (for now) still needs to be manually added to models.json
+Rename config.js.template (to config.js) in the root of the project and configure it according to your setup, including paths to the SSL certificate files, llama.cpp executable, and LLM storage.
+
+8. **Model Configuration**
+Rename data/models.json.template and modify to run the downloaded models. Supports setting up model personalities. See [main readme](https://github.com/ggerganov/llama.cpp/blob/master/examples/main/README.md) for details on run configuration. Supported configurations can be found in src/services/LlamaModel/buildArgs.js
 
 
-    // SSL Configuration
-    privateKeyPath: '../ssl/<webaddress>-key.pem', // Path to private key
-    certificatePath: '../ssl/<webaddress>-crt.pem', // Path to certificate
-    caChainPath: '../ssl/<webaddress>-chain.pem', // Path to CA chain
-    passphrase: '<passphrase>', // Passphrase for SSL key (if any)
-};
-
-module.exports = config;
-```
-
-8. **Create '../data/models.json'.**
-- Example setup.
-```json
-{
-    "Mistral-7b": {
-        "params": {
-            "model":"TheBloke\\Mistral-7B-Instruct-v0.2-GGUF\\mistral-7b-instruct-v0.2.Q4_K_M.gguf",
-            "instruct": true,
-            "temperature": 0.7,
-            "gpuLayers": 80,
-            "threads": 12,
-            "ctxSize": 4096,
-            "repeatPenalty": 1.1,
-            "seed": 42,
-            "nPredict": -1
-        },
-        "template": "zephyr",
-        "personalities": {
-            "geography teacher": "You will introduce yourself as a geography teacher. Your name is Tom and you are 26 years old. You love traveling and your passion is to share knowledge and this interest with your students. You once traveled to Paris and fell in love."
-        }
-    }
-}
-```
-
-9. **Generate an auth key.**
+9. **Authentication Key Generation**
+Generate an authentication key for secure access to the API:
 ```bash
     node src/services/generateAuthKey.js "PythonKey" "This key is for testing purposes"
 ```
-*This key provides authentication for remote access.*
 
-10. **Run API**
+10. **Starting the API**
+Launch the LLM-API server:
 ```bash
 node src/app.js
 ```
 
-## Basic Usage
+## Usage Instructions
 
-**Python demo code:**
-The API supports the openai library.
+### Python Integration
+The LLM-API is compatible with the OpenAI library. Use the provided Python code examples to load models, send requests, and receive responses, both in standard and streaming modes.
 
 *First load the modell by accessing the /loadModel end point*
 ```python

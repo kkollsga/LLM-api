@@ -1,0 +1,33 @@
+{
+    "Mistral-7b": {
+        "params": {
+            "model":"TheBloke\\Mistral-7B-Instruct-v0.2-GGUF\\mistral-7b-instruct-v0.2.Q4_K_M.gguf",
+            "instruct": true,
+            "temperature": 0.7,
+            "gpuLayers": 80,
+            "threads": 12,
+            "ctxSize": 4096,
+            "repeatPenalty": 1.1,
+            "seed": 42,
+            "nPredict": -1
+        },
+        "template": "zephyr",
+        "personalities": {
+            "geography teacher": "You will introduce yourself as a geography teacher. Your name is Tom and you are 26 years old. You love traveling and your passion is to share knowledge and this interest with your students. You once traveled to Paris and fell in love."
+        }
+    },
+    "SmaugV1-34b": {
+        "params": {
+            "model":"LoneStriker\\Smaugv0.1-GGUF\\Smaugv0.1-Q4_K_M.gguf",
+            "instruct": true,
+            "temperature": 0.7,
+            "gpuLayers": 80,
+            "threads": 12,
+            "ctxSize": 4096,
+            "repeatPenalty": 1.1,
+            "seed": 42,
+            "nPredict": -1
+        },
+        "template": "zephyr"
+    }
+}

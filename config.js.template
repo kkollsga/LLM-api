@@ -1,0 +1,15 @@
+const config = {
+    host: '0.0.0.0', // Host to listen on all network interfaces
+    port: 80, // Default port number for the API (443 for SSL, 80 for normal)
+    useSSL: false, // Default setup without SSL. After certificates have been created enable SSL.
+    llamaMain: '<path to llama.cpp build folder>\\bin\\Release\\main.exe', // Path to main.exe usually llama-cpp\bin\Release\main.exe
+    llmStorage: 'D:\\LLMs', // Path to local model storage. Models (for now) still needs to be manually added to models.json
+
+    // SSL Configuration
+    privateKeyPath: '../ssl/<Server IP/Domain>-key.pem', // Path to private key
+    certificatePath: '../ssl/<Server IP/Domain>-crt.pem', // Path to certificate
+    caChainPath: '../ssl/<Server IP/Domain>-chain.pem', // Path to CA chain
+    passphrase: '<passphrase>', // Passphrase for SSL key (if any)
+};
+
+module.exports = config;
